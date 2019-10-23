@@ -14,6 +14,7 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState>{
 
 }
 
+
 class ReaderState {
   double fontSize;
   ArticleEntity preArticle;
