@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage>
         child: TabBar(
           controller: _tabController,
           tabs: _tabs,
-            labelStyle:Theme.of(context).textTheme.subhead.copyWith(fontWeight: FontWeight.bold),
+            labelStyle:Theme.of(context).primaryTextTheme.subhead.copyWith(fontWeight: FontWeight.bold),
           labelColor: Theme.of(context).selectedRowColor,
           unselectedLabelColor: Theme.of(context).unselectedWidgetColor,
           indicatorColor: Theme.of(context).selectedRowColor,

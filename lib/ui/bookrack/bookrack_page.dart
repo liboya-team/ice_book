@@ -58,7 +58,7 @@ class _BookRackPageState extends State<BookRackPage> {
                           child: Text(
                             "小冰阅读",
                             style: Theme.of(context)
-                                .textTheme
+                                .primaryTextTheme
                                 .caption
                                 .copyWith(color: Colors.white),
                           ),
@@ -81,7 +81,7 @@ class _BookRackPageState extends State<BookRackPage> {
                         Text(
                           "盘龙",
                           style: Theme.of(context)
-                              .textTheme
+                              .primaryTextTheme
                               .subhead
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
@@ -98,7 +98,7 @@ class _BookRackPageState extends State<BookRackPage> {
                             child: Text(
                               "更新",
                               style: Theme.of(context)
-                                  .textTheme
+                                  .primaryTextTheme
                                   .overline
                                   .copyWith(color: Colors.white),
                             )),
@@ -117,7 +117,7 @@ class _BookRackPageState extends State<BookRackPage> {
                       "119章未读　第1293章　灵皇",
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).primaryTextTheme.caption,
                     )
                   ],
                 ),
