@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ice_book/data/entity/article_entity.dart';
 import 'package:ice_book/data/text.dart';
 import 'package:ice_book/ui/reader/reader_bloc.dart';
+import 'package:ice_book/ui/reader/reader_menu.dart';
 import 'package:ice_book/ui/reader/reader_view.dart';
 import 'package:ice_book/utils/screen.dart';
 
@@ -81,6 +82,7 @@ class _ReaderPageState extends State<ReaderPage> {
                   SafeArea(
                     child: _buildPageView(),
                   ),
+                  _addMenu(),
                 ],
               ),
             );
@@ -88,6 +90,10 @@ class _ReaderPageState extends State<ReaderPage> {
         ),
       ),
     );
+  }
+  Widget _addMenu(){
+    ReaderState state = _readerBloc.currentState;
+    return state.showMenu? ReaderMenu(): Container();
   }
 
   Widget _buildPageView() {
@@ -141,6 +147,7 @@ class _ReaderPageState extends State<ReaderPage> {
     double xRate = position.dx / Screen.width;
     //点击中间弹出菜单
     if (xRate > 0.33 && xRate < 0.66) {
+      _readerBloc.dispatch(MenuEvent());
 //      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top, SystemUiOverlay.bottom]);
 //      setState(() {
 //        isMenuVisiable = true;

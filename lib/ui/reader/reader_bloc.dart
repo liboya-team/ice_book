@@ -20,6 +20,10 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
       yield* _preArticle();
     } else if (event is PageChangeEvent) {
       yield* _pageChange(event.index);
+    } else if (event is MenuEvent){
+      yield currentState.copyWith(showMenu: !currentState.showMenu);
+    } else if (event is FontEvent){
+      yield* _fontChange(event.fontSize);
     }
   }
 
@@ -84,6 +88,31 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
     }
 
   }
+  Stream<ReaderState> _fontChange(double fontSize) async*{
+    ReaderState state = currentState.copyWith(fontSize: fontSize);
+    state.currentArticle.pageOffsets = ReaderPageAgent.getPageOffsets(
+        state.currentArticle.content,
+        currentState.contentHeight,
+        currentState.contentWidth,
+        currentState.fontSize);
+    if (state.preArticle != null){
+      state.preArticle.pageOffsets = ReaderPageAgent.getPageOffsets(
+          state.preArticle.content,
+          currentState.contentHeight,
+          currentState.contentWidth,
+          currentState.fontSize);
+    }
+    if (state.nextArticle != null){
+      state.nextArticle.pageOffsets = ReaderPageAgent.getPageOffsets(
+          state.nextArticle.content,
+          currentState.contentHeight,
+          currentState.contentWidth,
+          currentState.fontSize);
+    }
+    yield state;
+
+
+  }
 
 
   Future<ArticleEntity> fetchArticle(int articleId, {double contentWidth, double contentHeight}) async{
@@ -116,6 +145,7 @@ class ReaderState {
   ArticleEntity preArticle;
   ArticleEntity currentArticle;
   ArticleEntity nextArticle;
+  bool showMenu;
 
   ReaderState({
     this.event,
@@ -125,7 +155,8 @@ class ReaderState {
     this.contentHeight,
     this.preArticle,
     this.currentArticle,
-    this.nextArticle});
+    this.nextArticle,
+  this.showMenu = false});
 
   ReaderState copyWith({ReaderEvent event, int pageIndex,
     double fontSize,
@@ -133,7 +164,8 @@ class ReaderState {
     double contentHeight,
     ArticleEntity preArticle,
     ArticleEntity currentArticle,
-    ArticleEntity nextArticle}) {
+    ArticleEntity nextArticle,
+  bool showMenu}) {
     return ReaderState(
       event: event?? this.event,
         pageIndex: pageIndex ?? this.pageIndex,
@@ -142,7 +174,8 @@ class ReaderState {
         contentHeight: contentHeight ?? this.contentHeight,
         preArticle: preArticle ?? this.preArticle,
         currentArticle: currentArticle ?? this.currentArticle,
-        nextArticle: nextArticle ?? this.nextArticle);
+        nextArticle: nextArticle ?? this.nextArticle,
+    showMenu: showMenu?? this.showMenu);
   }
 }
 
@@ -151,6 +184,10 @@ class ReaderEvent {}
 class NextArticleEvent extends ReaderEvent {}
 
 class PreArticleEvent extends ReaderEvent {}
+
+class MenuEvent extends ReaderEvent{
+
+}
 
 class InitPageEvent extends ReaderEvent {
   double fontSize;
@@ -174,5 +211,12 @@ class PageChangeEvent extends ReaderEvent {
   int index;
 
   PageChangeEvent(this.index);
+
+}
+
+class FontEvent extends ReaderEvent{
+  double fontSize;
+
+  FontEvent(this.fontSize);
 
 }
